@@ -1,0 +1,11 @@
+[
+    {
+        "left_vehicle" : "You have left your vehicle",
+        "waypoint_not_active" : "Destination is not selected",
+        "destination_reached" : "Destination has been reached",
+        "vehicle_not_allowed" : "Self driving is not supported in this vehicle",
+        "no_driver" : "Driver seat is empty",
+        "start_self_driving" : "Self driving turned on",
+        "stop_self_driving" : "Self driving turned off"
+    }
+]
