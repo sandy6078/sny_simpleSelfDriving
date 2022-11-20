@@ -4,7 +4,7 @@
 ### Preview
 
 ### Installation
-- Download the latest release
+- Download the [latest release](https://github.com/sandy6078/sny_simpleSelfDriving/releases)
 - Unzip the file
 - Rename the folder to `sny_simpleSelfDriving`
 - Play around!
@@ -12,3 +12,6 @@
 ### Todo
 - Complete Polish translation
 - Complete sound effect playback
+
+### References
+- Thanks to [TomGrobbe](https://github.com/TomGrobbe) for his work on [Driving Style Calculator](https://vespura.com/fivem/drivingstyle/)
