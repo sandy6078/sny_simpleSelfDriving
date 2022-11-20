@@ -6,7 +6,7 @@
 ### Installation
 - Download the latest release
 - Unzip the file
-- Rename the folder to `sny_simpleSelfDriving
+- Rename the folder to `sny_simpleSelfDriving`
 - Play around!
 
 ### Todo
