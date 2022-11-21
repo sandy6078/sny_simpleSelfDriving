@@ -1,11 +1,12 @@
 [
     {
-        "left_vehicle" : "You have left your vehicle",
-        "waypoint_not_active" : "Destination is not selected",
-        "destination_reached" : "Destination has been reached",
-        "vehicle_not_allowed" : "Self driving is not supported in this vehicle",
-        "no_driver" : "Driver seat is empty",
-        "start_self_driving" : "Self driving turned on",
-        "stop_self_driving" : "Self driving turned off"
+        "left_vehicle" : "Opuściłeś swój pojazd",
+        "waypoint_not_active" : "Cel nie został wybrany",
+        "destination_reached" : "Dotarłeś do celu",
+        "vehicle_not_allowed" : "Samodzielna jazda nie jest możliwa w tym pojeździe",
+        "no_driver" : "Fotel kierowcy jest pusty",
+        "start_self_driving" : "Włączono samodzielną jazdę",
+        "stop_self_driving" : "Wyłączono samodzielną jazdę",
+        "missing_translation" : "Brak tłumaczenia"
     }
 ]

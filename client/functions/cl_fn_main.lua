@@ -29,24 +29,38 @@ end
 client.functions.calculateDrivingStyle = function()
     local binaryValue = ''
     for i = 31, 1, -1 do
-        local checked = config.drivingStyle[i].checked and 1 or 0
+        local checked = config.drivingStyle[i] and 1 or 0
         binaryValue = binaryValue..checked
     end
-    print(binaryValue)
-    print(tonumber(binaryValue, 2))
     client.drivingStyle = tonumber(binaryValue, 2)
 end
 
 client.functions.isDriver = function(playerVehicle)
     local vehicleDriver = GetPedInVehicleSeat(playerVehicle, -1)
     if (vehicleDriver == 0) then
-        config.showNotification(client.language['no_driver'])
+        client.functions.showNotification('no_driver', 'error')
         return false
     end
     return true
 end
 
-client.functions.startSelfDriving = function(playerPed, playerVehicle, waypointCoords)
+client.functions.playSound = function(soundName)
+    SendNUIMessage({
+        action = 'play_sound',
+        type = soundName
+    })
+end
+
+client.functions.showNotification = function(message, messageType)
+    if client.language[message] then
+        config.showNotification(client.language[message], messageType)
+    else
+        config.showNotification(client.language['missing_translation']..' : '..message, messageType)
+        client.functions.playSound('error')
+    end
+end
+
+client.functions.startSelfDriving = function(playerPed, playerVehicle, waypointCoords, playSound)
     if DoesEntityExist(playerPed) and DoesEntityExist(playerVehicle) then
         client.currentVehicle = playerVehicle
         client.target = waypointCoords
@@ -56,12 +70,14 @@ client.functions.startSelfDriving = function(playerPed, playerVehicle, waypointC
         if locked ~= 2 then
             SetVehicleDoorsLocked(client.currentVehicle, 1)
         end
-        config.showNotification(client.language['start_self_driving'])
-        print('Start Self Driving')
+        client.functions.showNotification('start_self_driving', 'success')
+        if playSound then
+            client.functions.playSound('enable')
+        end
     end
 end
 
-client.functions.stopSelfDriving = function(playerPed)
+client.functions.stopSelfDriving = function(playerPed, playSound)
     if DoesEntityExist(playerPed) then
         if IsPedInAnyVehicle(playerPed, false) then
             local playerVehicle = GetVehiclePedIsIn(playerPed, false)
@@ -71,8 +87,10 @@ client.functions.stopSelfDriving = function(playerPed)
         end
         client.isDriving = false
         client.target = nil
-        config.showNotification(client.language['stop_self_driving'])
-        print('Stop Self Driving')
+        client.functions.showNotification('stop_self_driving', 'error')
+        if playSound then
+            client.functions.playSound('disable')
+        end
     end
 end
 

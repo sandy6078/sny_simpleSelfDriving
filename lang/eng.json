@@ -3,9 +3,10 @@
         "left_vehicle" : "You have left your vehicle",
         "waypoint_not_active" : "Destination is not selected",
         "destination_reached" : "Destination has been reached",
-        "vehicle_not_allowed" : "Self driving is not supported in this vehicle",
+        "vehicle_not_allowed" : "Self driving is not possible in this vehicle",
         "no_driver" : "Driver seat is empty",
         "start_self_driving" : "Self driving turned on",
-        "stop_self_driving" : "Self driving turned off"
+        "stop_self_driving" : "Self driving turned off",
+        "missing_translation" : "Missing Translation"
     }
 ]

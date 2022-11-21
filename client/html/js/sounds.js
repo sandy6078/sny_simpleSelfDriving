@@ -13,21 +13,27 @@ function playSound(soundName) {
         stopSound(currentSound);
     }
     var sound = document.getElementById(soundName);
-    setSoundVolume(soundName, 0.1);
-    currentSound = soundName;
-    sound.play();
+    if (sound) {
+        setSoundVolume(soundName, 0.2);
+        currentSound = soundName;
+        sound.play();
+    }
 }
 
 function stopSound(soundName) {
     var sound = document.getElementById(soundName);
-    sound.pause();
-    sound.currentTime = 0;
-    currentSound = '';
+    if (sound) {
+        sound.pause();
+        sound.currentTime = 0;
+        currentSound = '';
+    }
 }
 
-function setSoundVolume(soundName, volume) {
+function setSoundVolume(soundName, volumeLevel) {
     var sound = document.getElementById(soundName);
-    sound.volume(volume);
+    if (sound) {
+        sound.volume = volumeLevel;
+    }
 }
 
 function isSoundPlaying(soundName) { 

@@ -1,3 +1,9 @@
+if (config.framework == 'qb') then
+    QBCore = exports['qb-core']:GetCoreObject()
+elseif (config.framework == 'esx') then
+    ESX = exports['es_extended']:getSharedObject()
+end
+
 client.functions.initialize()
 
 Citizen.CreateThread(function()
@@ -28,22 +34,25 @@ Citizen.CreateThread(function()
                 client.isInVehicle = false
                 client.currentVehicle = 0
                 if client.isDriving then
-                    config.showNotification(client.language['left_vehicle'])
+                    client.functions.showNotification('left_vehicle', 'error')
                 end
             end
         end
         if client.isDriving then
-            if not IsWaypointActive() then
-                forceStop = true
-                config.showNotification(client.language['waypoint_not_active'])
-            end
             if client.target then
                 local playerCoords = GetEntityCoords(client.playerPed)
                 local targetDistance = GetDistanceBetweenCoords(playerCoords, client.target, false)
-                print(targetDistance)
-                if (targetDistance < 10.0) or forceStop then
-                    client.functions.stopSelfDriving(client.playerPed)
-                    config.showNotification(client.language['destination_reached'])
+                if not IsWaypointActive() then
+                    forceStop = true
+                    client.functions.showNotification('waypoint_not_active', 'error')
+                    client.functions.playSound('error')
+                end
+                if (targetDistance < 31.0) then
+                    client.functions.stopSelfDriving(client.playerPed, false)
+                    client.functions.showNotification('destination_reached', 'success')
+                    client.functions.playSound('destination_reached')
+                elseif forceStop then
+                    client.functions.stopSelfDriving(client.playerPed, true)
                 end
             end
         end
@@ -58,18 +67,20 @@ RegisterCommand('toggleselfdriving', function()
             if client.functions.isDriver(playerVehicle) then
                 if (config.restrictVehicles and client.functions.isVehicleAllowed(vehicleModel)) or (not config.restrictVehicles) then
                     if client.isDriving then
-                        client.functions.stopSelfDriving(client.playerPed)
+                        client.functions.stopSelfDriving(client.playerPed, true)
                     else
                         if IsWaypointActive() then
                             local waypoint = GetFirstBlipInfoId(8)
                             local waypointCoords = GetBlipInfoIdCoord(waypoint)
-                            client.functions.startSelfDriving(client.playerPed, playerVehicle, waypointCoords)
+                            client.functions.startSelfDriving(client.playerPed, playerVehicle, waypointCoords, true)
                         else
-                            config.showNotification(client.language['waypoint_not_active'])
+                            client.functions.showNotification('waypoint_not_active', 'error')
+                            client.functions.playSound('error')
                         end
                     end 
                 else
-                    config.showNotification(client.language['vehicle_not_allowed'])
+                    client.functions.showNotification('vehicle_not_allowed', 'error')
+                    client.functions.playSound('error')
                 end
             end
         end

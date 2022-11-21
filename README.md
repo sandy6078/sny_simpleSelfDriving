@@ -1,5 +1,5 @@
 # sny_simpleSelfDriving
- A simple standalone self driving resource made for FiveM
+ A simple standalone self driving resource made for FiveM with support for QB-Core and ESX
  
 ### Preview
 
@@ -10,8 +10,8 @@
 - Play around!
 
 ### Todo
-- Complete Polish translation
-- Complete sound effect playback
+- Preview
+- Documentation
 
 ### References
 - Thanks to [TomGrobbe](https://github.com/TomGrobbe) for his work on [Driving Style Calculator](https://vespura.com/fivem/drivingstyle/)
