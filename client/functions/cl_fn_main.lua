@@ -77,12 +77,22 @@ client.functions.startSelfDriving = function(playerPed, playerVehicle, waypointC
     end
 end
 
-client.functions.stopSelfDriving = function(playerPed, playSound)
+client.functions.stopSelfDriving = function(playerPed, brake, playSound)
     if DoesEntityExist(playerPed) then
         if IsPedInAnyVehicle(playerPed, false) then
             local playerVehicle = GetVehiclePedIsIn(playerPed, false)
             ClearVehicleTasks(playerVehicle)
-            SetVehicleBrake(playerVehicle, true)
+            if brake then
+                Citizen.CreateThread(function()
+                    while not IsVehicleStopped(playerVehicle) do
+                        Citizen.Wait(0)
+                        SetVehicleBrake(playerVehicle, true)
+                        SetVehicleHandbrake(playerVehicle, true)
+                    end
+                    SetVehicleBrake(playerVehicle, false)
+                    SetVehicleHandbrake(playerVehicle, false)
+                end)
+            end
             client.currentVehicle = 0
         end
         client.isDriving = false

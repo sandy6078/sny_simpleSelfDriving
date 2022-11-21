@@ -7,7 +7,7 @@ config.framework = 'qb' -- qb, esx, or none (currently only used for notificatio
 config.selfDrivingButton = 'U' -- button to toggle on self driving
 
 config.drivingSpeed = 30.0 -- speed at which the car will travel
-config.drivingDistanceStop = 10.0 -- distance from the target where self dricing will disable
+config.drivingDistanceStop = 35.0 -- distance from the target where self dricing will disable
 
 -- Thanks to TomGrobbe for his work on https://vespura.com/fivem/drivingstyle/; I was able to understand the flags
 config.drivingStyle = {

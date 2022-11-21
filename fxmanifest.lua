@@ -3,7 +3,7 @@ game 'gta5'
 
 author 'SANDY#6078'
 description 'Standalone simple self driving resource'
-version '1.1.0'
+version '1.1.1'
 
 ui_page 'client/html/index.html'
 

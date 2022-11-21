@@ -47,12 +47,12 @@ Citizen.CreateThread(function()
                     client.functions.showNotification('waypoint_not_active', 'error')
                     client.functions.playSound('error')
                 end
-                if (targetDistance < 31.0) then
-                    client.functions.stopSelfDriving(client.playerPed, false)
+                if (targetDistance < config.drivingDistanceStop) then
+                    client.functions.stopSelfDriving(client.playerPed, true, false)
                     client.functions.showNotification('destination_reached', 'success')
                     client.functions.playSound('destination_reached')
                 elseif forceStop then
-                    client.functions.stopSelfDriving(client.playerPed, true)
+                    client.functions.stopSelfDriving(client.playerPed, false, true)
                 end
             end
         end
@@ -67,7 +67,7 @@ RegisterCommand('toggleselfdriving', function()
             if client.functions.isDriver(playerVehicle) then
                 if (config.restrictVehicles and client.functions.isVehicleAllowed(vehicleModel)) or (not config.restrictVehicles) then
                     if client.isDriving then
-                        client.functions.stopSelfDriving(client.playerPed, true)
+                        client.functions.stopSelfDriving(client.playerPed, false, true)
                     else
                         if IsWaypointActive() then
                             local waypoint = GetFirstBlipInfoId(8)
