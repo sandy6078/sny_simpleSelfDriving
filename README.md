@@ -7,12 +7,14 @@
 - Video
 
 ### Installation
-- Download the [latest release](https://github.com/sandy6078/sny_simpleSelfDriving/releases)
-- Unzip the file
-- Rename the folder to `sny_simpleSelfDriving`
-- Add `ensure sny_simpleSelfDriving` anywhere to `server.cfg`
+- 1.Download the [latest release](https://github.com/sandy6078/sny_simpleSelfDriving/releases)
+- 2.Unzip the file
+- 3.Rename the folder to `sny_simpleSelfDriving`
+- 4.Add `ensure sny_simpleSelfDriving` anywhere to `server.cfg`
 - (OPTIONAL) Run `sny_simpleSelfDriving.sql` (only if `config.useMySQL` is set to `true`)
-- Play around!
+- (OPTIONAL) Uncomment `@oxmysql/lib/MySQL.lua` in `server_scripts`
+- (OPTIONAL) Uncomment `oxmysql` in `dependencies`
+- 5.Play around!
 
 ### Todo
 - Preview

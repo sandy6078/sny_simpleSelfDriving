@@ -1,7 +1,9 @@
 fx_version 'cerulean'
 game 'gta5'
 
+name 'sny_simpleSelfDriving'
 author 'SANDY#6078'
+url 'https://github.com/sandy6078/sny_simpleSelfDriving'
 description 'Standalone simple self driving resource'
 version '1.1.1'
 
@@ -25,8 +27,13 @@ client_scripts {
 }
 
 server_scripts {
+    --'@oxmysql/lib/MySQL.lua',
     'server/functions/sv_fn_common.lua',
     'server/objects/sv_obj_vehicle.lua',
     'server/functions/sv_fn_main.lua',
     'server/sv_main.lua'
+}
+
+dependencies {
+	--'oxmysql'
 }

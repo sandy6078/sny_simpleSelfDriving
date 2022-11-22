@@ -93,7 +93,14 @@ client.functions.stopSelfDriving = function(playerPed, brake, playSound)
     end
 end
 
-client.functions.openSelfDriveMenu = function(owned, favourite, histor)
+client.functions.openSelfDriveMenu = function(owned, favourite, history)
+    SendNUIMessage({
+        action = 'open_ui',
+        type = 'self_drive_menu',
+        owned = owned,
+        favourite = favourite,
+        history = history
+    })
     --ActivateFrontendMenu(GetHashKey('FE_MENU_VERSION_MP_PAUSE', true, -1))
     --[[
     if client.isDriving then
