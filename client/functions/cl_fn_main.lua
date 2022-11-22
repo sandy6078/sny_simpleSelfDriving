@@ -93,6 +93,24 @@ client.functions.stopSelfDriving = function(playerPed, brake, playSound)
     end
 end
 
+client.functions.openSelfDriveMenu = function(owned, favourite, histor)
+    --ActivateFrontendMenu(GetHashKey('FE_MENU_VERSION_MP_PAUSE', true, -1))
+    --[[
+    if client.isDriving then
+        client.functions.stopSelfDriving(client.playerPed, false, true)
+    else
+        if IsWaypointActive() then
+            local waypoint = GetFirstBlipInfoId(8)
+            local waypointCoords = GetBlipInfoIdCoord(waypoint)
+            client.functions.startSelfDriving(client.playerPed, playerVehicle, waypointCoords, true)
+        else
+            client.functions.showNotification('waypoint_not_active', 'error')
+            client.functions.playSound('error')
+        end
+    end
+    ]]--
+end
+
 client.functions.initialize = function()
     shared.functions.loadLanguages(function(language)
         client.language = language

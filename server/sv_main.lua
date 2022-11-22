@@ -20,3 +20,15 @@ if config.useMySQL then
         end
     end)
 end
+
+RegisterServerEvent(GetCurrentResourceName()..':getVehicleByPlate')
+AddEventHandler(GetCurrentResourceName()..':getVehicleByPlate', function(plate)
+	local _source = source
+    local vehicleObject = server.functions.getVehicleByPlate(tostring(plate))
+    if vehicleObject then
+        local owned = vehicleObject.functions.getOwned()
+        local favourite = vehicleObject.functions.getFavourite()
+        local history = vehicleObject.functions.getHistory()
+        TriggerClientEvent(GetCurrentResourceName()':getVehicleByPlate', _source, owned, favourite, history)
+    end
+end)

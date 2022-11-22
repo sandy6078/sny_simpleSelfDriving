@@ -31,7 +31,7 @@ server.functions.saveVehicle = function(plate, cb)
             favourite,
             history,
             vehicleObject.functions.getPlate()
-        }, function(affectedRows)
+        }, function(result)
             if cb then 
                 cb()
             end

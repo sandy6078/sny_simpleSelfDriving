@@ -20,6 +20,7 @@ Citizen.CreateThread(function()
                 client.isEnteringVehicle = false
             elseif IsPedInAnyVehicle(client.playerPed, false) then
                 client.currentVehicle = GetVehiclePedIsIn(client.playerPed, false)
+                local plate = GetVehicleNumberPlateText(client.currentVehicle, true)
                 client.isEnteringVehicle = false
                 client.isInVehicle = true
             end
@@ -66,18 +67,7 @@ RegisterCommand('toggleselfdriving', function()
             local vehicleModel = GetEntityModel(playerVehicle)
             if client.functions.isDriver(playerVehicle) then
                 if (config.restrictVehicles and client.functions.isVehicleAllowed(vehicleModel)) or (not config.restrictVehicles) then
-                    if client.isDriving then
-                        client.functions.stopSelfDriving(client.playerPed, false, true)
-                    else
-                        if IsWaypointActive() then
-                            local waypoint = GetFirstBlipInfoId(8)
-                            local waypointCoords = GetBlipInfoIdCoord(waypoint)
-                            client.functions.startSelfDriving(client.playerPed, playerVehicle, waypointCoords, true)
-                        else
-                            client.functions.showNotification('waypoint_not_active', 'error')
-                            client.functions.playSound('error')
-                        end
-                    end 
+                    TriggerServerEvent(GetCurrentResourceName()..':getVehicleByPlate', plate)
                 else
                     client.functions.showNotification('vehicle_not_allowed', 'error')
                     client.functions.playSound('error')
@@ -87,3 +77,8 @@ RegisterCommand('toggleselfdriving', function()
     end
 end, false)
 RegisterKeyMapping('toggleselfdriving', 'Toggle Self Driving', 'keyboard', config.selfDrivingButton)
+
+RegisterNetEvent(GetCurrentResourceName()..':getVehicleByPlate')
+AddEventHandler(GetCurrentResourceName()..':getVehicleByPlate', function(owned, favourite, history)
+    client.functions.openSelfDriveMenu(owned, favourite, history)
+end)
