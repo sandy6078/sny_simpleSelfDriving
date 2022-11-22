@@ -1,8 +1,12 @@
 config = {}
 
+config.debug = true -- if enabled server prints will show
+
 config.language = 'eng' -- name of the language file to use
 
 config.framework = 'qb' -- qb, esx, or none (currently only used for notifications)
+
+config.useMySQL = true -- if set to true, will allow to save/browse/delete routes from history
 
 config.selfDrivingButton = 'U' -- button to toggle on self driving
 

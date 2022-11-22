@@ -11,17 +11,6 @@ client.drivingStyle = 0
 
 client.functions = {}
 
-client.functions.loadLanguages = function(cb)
-	local language = LoadResourceFile(GetCurrentResourceName(), '/lang/'..config.language..'.json')
-    if language then
-        jsonLanguage = json.decode(language)
-        client.language = jsonLanguage[1]
-    end
-    if cb then
-        cb(true)
-    end
-end
-
 client.functions.isVehicleAllowed = function(modelHash)
     return config.allowedVehicles[modelHash]
 end
@@ -105,7 +94,8 @@ client.functions.stopSelfDriving = function(playerPed, brake, playSound)
 end
 
 client.functions.initialize = function()
-    client.functions.loadLanguages(function()
+    shared.functions.loadLanguages(function(language)
+        client.language = language
         client.functions.calculateDrivingStyle()
     end)
 end
