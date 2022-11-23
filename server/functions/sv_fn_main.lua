@@ -8,14 +8,6 @@ server.functions.getVehicles = function()
     return server.vehicles
 end
 
-server.functions.getVehicleById = function(id)
-    for k, v in pairs(server.vehicles) do
-        if (tostring(id) == tostring(v.getId())) then
-            return v
-        end
-    end
-end
-
 server.functions.getVehicleByPlate = function(plate)
     return server.vehicles[tostring(plate)]
 end
@@ -23,19 +15,27 @@ end
 server.functions.saveVehicle = function(plate, cb)
     local vehicleObject = server.functions.getVehicleByPlate(tostring(plate))
     if vehicleObject then
-        local owned = shared.functions.booleanToNumber(vehicleObject.functions.getOwned())
+        local plate = vehicleObject.functions.getPlate()
+        local owned = vehicleObject.functions.getOwned()
         local favourite = json.encode(vehicleObject.functions.getFavourite())
         local history = json.encode(vehicleObject.functions.getHistory())
-        MySQL.prepare('UPDATE `self_driving_vehicles` SET `owned` = ?, `favourite` = ?, `history` = ? WHERE `plate` = ?', {
-            owned,
-            favourite,
-            history,
-            vehicleObject.functions.getPlate()
-        }, function(result)
-            if cb then 
-                cb()
-            end
-        end)
+        if owned then
+            MySQL.prepare('UPDATE `self_driving_vehicles` SET `favourite` = ?, `history` = ? WHERE `plate` = ?', {
+                favourite,
+                history,
+                plate
+            }, function(result)
+                if result then
+                    if type(cb) == 'function' then 
+                        cb() 
+                    else 
+                        if config.debug then
+                            print('Saved plate: '..plate..' self driving vehicle')
+                        end
+                    end
+                end
+            end)
+        end
     end
 end
 
@@ -45,16 +45,20 @@ server.functions.saveVehicles = function(cb)
     local time = os.time()
     local count = 0
     for k, v in pairs(vehicleObjects) do
-        count = count + 1
-        parameters[#parameters + 1] = {
-            owned,
-            favourite,
-            history,
-            vehicleObject.functions.getPlate()
-        }
+        local owned = vehicleObject.functions.getOwned()
+        local favourite = json.encode(vehicleObject.functions.getFavourite())
+        local history = json.encode(vehicleObject.functions.getHistory())
+        if owned then
+            count = count + 1
+            parameters[#parameters + 1] = {
+                favourite,
+                history,
+                v.functions.getPlate()
+            }
+        end
     end
     if (count >= 1) then
-        MySQL.prepare('UPDATE `self_driving_vehicles` SET `owned` = ?, `favourite` = ?, `history` = ? WHERE `plate` = ?', parameters,
+        MySQL.prepare('UPDATE `self_driving_vehicles` SET `favourite` = ?, `history` = ? WHERE `plate` = ?', parameters,
         function(results)
             if results then
                 if type(cb) == 'function' then 
@@ -67,4 +71,28 @@ server.functions.saveVehicles = function(cb)
             end
         end)
     end
+end
+
+server.functions.addVehicle = function(plate, owned, favourite, history)
+    local vehicleObject = server.functions.createVehicleObject(tostring(plate), owned, favourite, history)
+    server.vehicles[tostring(vehicleObject.functions.getPlate())] = vehicleObject
+end
+
+server.functions.addVehicleToDatabase = function(plate, favourite, history, cb)
+    MySQL.prepare('INSERT INTO `self_driving_vehicles` SET `plate` = ?, `favourite` = ?, `history` = ?', {
+        plate,
+        json.encode(favourite),
+        json.encode(history)
+    }, function(result)
+        if result then
+            server.functions.addVehicle(tostring(result.plate), true, json.decode(result.favourite), json.decode(result.history))
+            if type(cb) == 'function' then 
+                cb() 
+            else 
+                if config.debug then
+                    print('Added plate: '..plate..' self driving vehicle')
+                end
+            end
+        end
+    end)
 end

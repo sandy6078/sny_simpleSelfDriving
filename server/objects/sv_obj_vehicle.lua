@@ -1,16 +1,11 @@
-server.functions.createVehicleObject = function(id, plate, owned, favourite, history)
+server.functions.createVehicleObject = function(plate, owned, favourite, history)
     local self = {}
 
-    self.id = id
     self.plate = plate
     self.owned = owned
     self.favourite = favourite
     self.history = history
     self.functions = {}
-
-    self.functions.getId = function()
-        return self.id
-    end
 
     self.functions.getPlate = function()
         return self.plate

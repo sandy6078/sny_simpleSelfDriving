@@ -8,15 +8,12 @@ server.functions.initialize()
 
 if config.useMySQL then
     MySQL.ready(function()
-        local vehicles = MySQL.query.await('SELECT * FROM self_driving_vehicles')
+        local vehicles = MySQL.query.await('SELECT * FROM `self_driving_vehicles`')
         for k, v in pairs(vehicles) do
-            local id = tostring(v.id)
             local plate = tostring(v.plate)
-            local owned = shared.functions.numberToBoolean(v.owned)
             local favourite = json.decode(v.favourite)
             local history = json.decode(v.history)
-            local vehicleObject = server.functions.createVehicleObject(id, plate, owned, favourite, history)
-            server.vehicles[tostring(vehicleObject.functions.getPlate())] = vehicleObject
+            server.functions.addVehicle(plate, true, favourite, history)
         end
     end)
 end
@@ -25,10 +22,30 @@ RegisterServerEvent(GetCurrentResourceName()..':getVehicleByPlate')
 AddEventHandler(GetCurrentResourceName()..':getVehicleByPlate', function(plate)
 	local _source = source
     local vehicleObject = server.functions.getVehicleByPlate(tostring(plate))
+    local owned = false
+    local favourite = {}
+    local history = {}
     if vehicleObject then
-        local owned = vehicleObject.functions.getOwned()
-        local favourite = vehicleObject.functions.getFavourite()
-        local history = vehicleObject.functions.getHistory()
-        TriggerClientEvent(GetCurrentResourceName()':getVehicleByPlate', _source, owned, favourite, history)
+        owned = vehicleObject.functions.getOwned()
+        favourite = vehicleObject.functions.getFavourite()
+        history = vehicleObject.functions.getHistory()
+    else
+        local selectQuery = ''
+        if (config.framework == 'qb') then
+            selectQuery = 'SELECT `plate` FROM `player_vehicles` where `plate` = ?'
+        elseif (config.framework == 'esx') then
+            selectQuery = 'SELECT `plate` FROM `owned_vehicles` where `plate` = ?'
+        end
+        if selectQuery ~= '' then
+            local vehicle = MySQL.prepare.await(selectQuery, {plate})
+            if vehicle and vehicle.plate then
+                owned = true
+                server.functions.addVehicleToDatabase(tostring(vehicle.plate), favourite, history)
+            end
+        end
+        if not owned then
+            server.functions.addVehicle(plate, false, favourite, history)
+        end
     end
+    TriggerClientEvent(GetCurrentResourceName()':getVehicleByPlate', _source, owned, favourite, history)
 end)
