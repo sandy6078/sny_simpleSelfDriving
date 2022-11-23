@@ -18,8 +18,8 @@ if config.useMySQL then
     end)
 end
 
-RegisterServerEvent(GetCurrentResourceName()..':getVehicleByPlate')
-AddEventHandler(GetCurrentResourceName()..':getVehicleByPlate', function(plate)
+RegisterServerEvent(GetCurrentResourceName()..':openSelfDriveMenu')
+AddEventHandler(GetCurrentResourceName()..':openSelfDriveMenu', function(plate)
 	local _source = source
     local vehicleObject = server.functions.getVehicleByPlate(tostring(plate))
     local owned = false
@@ -36,16 +36,16 @@ AddEventHandler(GetCurrentResourceName()..':getVehicleByPlate', function(plate)
         elseif (config.framework == 'esx') then
             selectQuery = 'SELECT `plate` FROM `owned_vehicles` where `plate` = ?'
         end
-        if selectQuery ~= '' then
-            local vehicle = MySQL.prepare.await(selectQuery, {plate})
-            if vehicle and vehicle.plate then
+        if (selectQuery ~= '') then
+            local vehiclePlate = MySQL.prepare.await(selectQuery, {plate})
+            if vehiclePlate then
                 owned = true
-                server.functions.addVehicleToDatabase(tostring(vehicle.plate), favourite, history)
+                server.functions.addVehicleToDatabase(tostring(vehiclePlate), favourite, history)
             end
         end
         if not owned then
             server.functions.addVehicle(plate, false, favourite, history)
         end
     end
-    TriggerClientEvent(GetCurrentResourceName()':getVehicleByPlate', _source, owned, favourite, history)
+    TriggerClientEvent(GetCurrentResourceName()..':openSelfDriveMenu', _source, owned, favourite, history)
 end)

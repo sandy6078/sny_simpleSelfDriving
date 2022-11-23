@@ -101,7 +101,8 @@ client.functions.openSelfDriveMenu = function(owned, favourite, history)
         favourite = favourite,
         history = history
     })
-    --ActivateFrontendMenu(GetHashKey('FE_MENU_VERSION_MP_PAUSE', true, -1))
+    -- ActivateFrontendMenu(GetHashKey('FE_MENU_VERSION_MP_PAUSE'), true, -1)
+    -- GetCurrentFrontendMenuVersion()
     --[[
     if client.isDriving then
         client.functions.stopSelfDriving(client.playerPed, false, true)

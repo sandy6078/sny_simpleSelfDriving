@@ -27,13 +27,14 @@ client_scripts {
 }
 
 server_scripts {
-    --'@oxmysql/lib/MySQL.lua',
+    '@oxmysql/lib/MySQL.lua',
     'server/functions/sv_fn_common.lua',
     'server/objects/sv_obj_vehicle.lua',
     'server/functions/sv_fn_main.lua',
-    'server/sv_main.lua'
+    'server/sv_main.lua',
+    'server/functions/sv_fn_export.lua'
 }
 
 dependencies {
-	--'oxmysql'
+	'oxmysql'
 }

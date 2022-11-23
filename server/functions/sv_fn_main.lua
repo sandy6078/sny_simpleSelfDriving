@@ -85,7 +85,7 @@ server.functions.addVehicleToDatabase = function(plate, favourite, history, cb)
         json.encode(history)
     }, function(result)
         if result then
-            server.functions.addVehicle(tostring(result.plate), true, json.decode(result.favourite), json.decode(result.history))
+            server.functions.addVehicle(tostring(plate), true, favourite, history)
             if type(cb) == 'function' then 
                 cb() 
             else 

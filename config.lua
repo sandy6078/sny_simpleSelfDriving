@@ -57,7 +57,8 @@ config.allowedVehicles = {
     [GetHashKey('voltic')] = true,
     [GetHashKey('omnisegt')] = true,
     [GetHashKey('imorgon')] = true,
-    [GetHashKey('tezeract')] = true
+    [GetHashKey('tezeract')] = true,
+    [GetHashKey('comet2')] = true -- just for testing
 }
 
 config.showNotification = function(message, messageType)
