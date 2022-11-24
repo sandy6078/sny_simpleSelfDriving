@@ -32,7 +32,7 @@ server_scripts {
     'server/objects/sv_obj_vehicle.lua',
     'server/functions/sv_fn_main.lua',
     'server/sv_main.lua',
-    'server/functions/sv_fn_export.lua'
+    'server/sv_export.lua'
 }
 
 dependencies {

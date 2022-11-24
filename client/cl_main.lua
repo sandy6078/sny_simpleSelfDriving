@@ -59,7 +59,7 @@ Citizen.CreateThread(function()
     end
 end)
 
-RegisterCommand('toggleselfdriving', function()
+RegisterCommand('openSelfDriveMenu', function()
     if DoesEntityExist(client.playerPed) then
         if IsPedInAnyVehicle(client.playerPed, false) then
             local playerVehicle = GetVehiclePedIsIn(client.playerPed, false)
@@ -76,7 +76,7 @@ RegisterCommand('toggleselfdriving', function()
         end
     end
 end, false)
-RegisterKeyMapping('toggleselfdriving', 'Toggle Self Driving', 'keyboard', config.selfDrivingButton)
+RegisterKeyMapping('openSelfDriveMenu', 'Open Self Drive Menu', 'keyboard', config.selfDrivingButton)
 
 RegisterNetEvent(GetCurrentResourceName()..':openSelfDriveMenu')
 AddEventHandler(GetCurrentResourceName()..':openSelfDriveMenu', function(owned, favourite, history)

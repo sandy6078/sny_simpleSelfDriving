@@ -97,26 +97,25 @@ client.functions.openSelfDriveMenu = function(owned, favourite, history)
     SendNUIMessage({
         action = 'open_ui',
         type = 'self_drive_menu',
+        isDriving = client.isDriving,
+        target = client.target,
         owned = owned,
         favourite = favourite,
         history = history
     })
-    -- ActivateFrontendMenu(GetHashKey('FE_MENU_VERSION_MP_PAUSE'), true, -1)
-    -- GetCurrentFrontendMenuVersion()
-    --[[
-    if client.isDriving then
-        client.functions.stopSelfDriving(client.playerPed, false, true)
-    else
-        if IsWaypointActive() then
-            local waypoint = GetFirstBlipInfoId(8)
-            local waypointCoords = GetBlipInfoIdCoord(waypoint)
-            client.functions.startSelfDriving(client.playerPed, playerVehicle, waypointCoords, true)
-        else
-            client.functions.showNotification('waypoint_not_active', 'error')
-            client.functions.playSound('error')
-        end
-    end
-    ]]--
+    client.functions.selectRouteTarget(playerPed)
+end
+
+client.functions.closeSelfDriveMenu = function()
+    SendNUIMessage({
+        action = 'close_ui',
+        type = 'self_drive_menu'
+    })
+end
+
+client.functions.selectRouteTarget = function(playerPed)
+    client.functions.closeSelfDriveMenu()
+    ActivateFrontendMenu(GetHashKey('FE_MENU_VERSION_MP_PAUSE'), true, -1)
 end
 
 client.functions.initialize = function()
@@ -125,3 +124,23 @@ client.functions.initialize = function()
         client.functions.calculateDrivingStyle()
     end)
 end
+
+RegisterNUICallback('startSelfDriving', function(data, cb)
+    if IsWaypointActive() then
+        local waypoint = GetFirstBlipInfoId(8)
+        local waypointCoords = GetBlipInfoIdCoord(waypoint)
+        local playerVehicle = GetVehiclePedIsIn(playerPed, false)
+        client.functions.startSelfDriving(client.playerPed, playerVehicle, waypointCoords, true)
+    else
+        client.functions.showNotification('waypoint_not_active', 'error')
+        client.functions.playSound('error')
+    end
+end)
+
+RegisterNUICallback('stopSelfDriving', function(data, cb)
+    client.functions.stopSelfDriving(client.playerPed, false, true)
+end)
+
+RegisterNUICallback('selectRouteTarget', function(data, cb)
+    client.functions.selectRouteTarget(client.playerPed)
+end)
